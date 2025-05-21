@@ -1,4 +1,4 @@
-# java_world
+# TaskTracker
 
 A Java Spring Boot MVC RESTful application for tracking users and their tasks, featuring a modern UI with Turbo (Hotwire) and Bootstrap, PostgreSQL integration, and JUnit testing.
 
@@ -14,8 +14,9 @@ A Java Spring Boot MVC RESTful application for tracking users and their tasks, f
   - Each user row shows their name and a badge with their task count
   - Clicking a user row navigates to their show page
   - Add user form (Turbo-powered, clears on submit)
-  - Assign task form with user dropdown (shows all users)
+  - Assign task form with user dropdown (shows all users, sorted by name, and updates asynchronously)
   - Success/error banners for feedback
+  - Pagination controls: Previous/Next buttons only show when appropriate, and the current page is visually highlighted
 - User show page:
   - Lists all tasks assigned to the user
   - Each task has a 'Complete' button to remove it
