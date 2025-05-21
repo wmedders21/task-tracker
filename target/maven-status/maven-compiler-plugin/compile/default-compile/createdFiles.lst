@@ -1,0 +1,7 @@
+com/example/java_world/model/Task.class
+com/example/java_world/JavaWorldApplication.class
+com/example/java_world/repository/TaskRepository.class
+com/example/java_world/model/User.class
+com/example/java_world/controller/HomeController.class
+com/example/java_world/DataSeeder.class
+com/example/java_world/repository/UserRepository.class

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.4/dist/turbo.es2017-umd.js"></script>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4cb.svg" alt="Task Tracker Logo" style="height: 32px; margin-right: 8px;" />
+                Task Tracker
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/readme">README</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container py-5">
+        <h1 class="mb-4 text-center d-flex flex-column align-items-center">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4cb.svg" alt="Task Tracker Logo" style="height: 60px; margin-bottom: 10px;" />
+            Task Tracker
+        </h1>
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-6">
+                <div id="add-user">
+                    <div th:replace="~{_addUserForm :: addUserForm}"></div>
+                </div>
+                <div id="add-task" class="mt-3">
+                    <div th:replace="~{_addTaskForm :: addTaskForm(allUsers=${allUsers})}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <turbo-frame id="user-list" th:fragment="userListFragment">
+                    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <span th:text="${successMessage}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span th:text="${errorMessage}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <ul class="list-group shadow">
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-light fw-bold">
+                            <span>User Name</span>
+                            <span>Task Count</span>
+                        </li>
+                        <a th:each="user : ${users}" th:href="'/users/' + ${user.id}" class="list-group-item d-flex justify-content-between align-items-center text-decoration-none text-dark" data-turbo-frame="_top" style="cursor:pointer;">
+                            <span th:text="${user.name}"></span>
+                            <span class="badge bg-secondary rounded-pill" th:text="${user.tasks != null ? user.tasks.size() : 0}"></span>
+                        </a>
+                    </ul>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <span th:text="'Showing ' + ${pageNumber * pageSize + 1} + ' to ' + ${pageNumber * pageSize + users.size()} + ' of ' + ${totalUsers} + ' users'"></span>
+                        </div>
+                        <nav>
+                            <ul class="pagination mb-0">
+                                <!-- Only show Previous if not on first page -->
+                                <li class="page-item" th:if="${pageNumber > 0}">
+                                    <form action="/users/page" method="get" data-turbo-frame="user-list">
+                                        <input type="hidden" name="page" th:value="${pageNumber - 1}" />
+                                        <button class="page-link" type="submit">Previous</button>
+                                    </form>
+                                </li>
+                                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == pageNumber} ? ' active'">
+                                    <form action="/users/page" method="get" data-turbo-frame="user-list">
+                                        <input type="hidden" name="page" th:value="${i}" />
+                                        <button class="page-link" type="submit" th:text="${i + 1}" th:classappend="${i == pageNumber} ? ' active' : ''"></button>
+                                    </form>
+                                </li>
+                                <!-- Only show Next if not on last page -->
+                                <li class="page-item" th:if="${pageNumber < totalPages - 1}">
+                                    <form action="/users/page" method="get" data-turbo-frame="user-list">
+                                        <input type="hidden" name="page" th:value="${pageNumber + 1}" />
+                                        <button class="page-link" type="submit">Next</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </turbo-frame>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('turbo:frame-render', function(e) {
+            // Auto-dismiss alerts after 2 seconds
+            setTimeout(function() {
+                document.querySelectorAll('.alert-dismissible').forEach(function(alert) {
+                    if (alert.classList.contains('show')) {
+                        var closeBtn = alert.querySelector('.btn-close');
+                        if (closeBtn) closeBtn.click();
+                    }
+                });
+            }, 2000);
+            // Clear add user form after successful submission
+            if (e.target && e.target.id === 'add-user') {
+                var form = e.target.querySelector('form');
+                if (form) form.reset();
+            }
+        });
+    </script>
+</body>
+</html>

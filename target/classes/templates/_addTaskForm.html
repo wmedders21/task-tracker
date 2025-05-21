@@ -1,0 +1,10 @@
+<div th:fragment="addTaskForm(allUsers)">
+    <form action="/tasks" method="post" data-turbo-stream="true" class="input-group mb-3">
+        <input type="text" name="description" class="form-control" placeholder="Task description" required autocomplete="off" />
+        <select name="userId" class="form-select" required>
+            <option value="" disabled selected>Select user</option>
+            <option th:each="user : ${allUsers}" th:value="${user.id}" th:text="${user.name}"></option>
+        </select>
+        <button type="submit" class="btn btn-success">Assign Task</button>
+    </form>
+</div>
