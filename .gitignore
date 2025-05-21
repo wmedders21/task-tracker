@@ -1,0 +1,33 @@
+# Java/Maven
+/target/
+*.log
+*.class
+*.jar
+*.war
+*.ear
+
+# IDEs
+/.idea/
+*.iml
+*.ipr
+*.iws
+/.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test output
+*.dump
+*.out
+*.swo
+*.swp
+
+# Misc
+*.tmp
+*.bak
+*.old
+
+# Ignore test H2 DB (if ever written to disk)
+*.mv.db
+*.h2.db
