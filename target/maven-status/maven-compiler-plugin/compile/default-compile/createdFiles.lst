@@ -1,7 +1,0 @@
-com/example/task_tracker/controller/HomeController.class
-com/example/task_tracker/TaskTrackerApplication.class
-com/example/task_tracker/repository/TaskRepository.class
-com/example/task_tracker/model/User.class
-com/example/task_tracker/DataSeeder.class
-com/example/task_tracker/repository/UserRepository.class
-com/example/task_tracker/model/Task.class
